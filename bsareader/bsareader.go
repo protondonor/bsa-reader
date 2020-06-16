@@ -8,13 +8,10 @@ type Header struct {
 	Type        byte
 }
 
-type Footer struct {
-	Records []Record
-}
-
 type Record struct {
-	Name string
-	Size int32
+	Name     string
+	Size     int32
+	Contents []byte
 }
 
 const (
@@ -51,7 +48,7 @@ func GetFooterOffset(recordCount uint16, bsaType byte) int {
 // Parses a BSA footer into records. If bsaType = 1, it will
 // parse NameRecords; otherwise, it will parse NumberRecords.
 // https://en.uesp.net/wiki/Daggerfall:BSA_file_formats#BsaFooter
-func ReadFooter(footer []byte, bsaType byte) Footer {
+func ReadFooter(footer []byte, bsaType byte) []Record {
 	records := []Record{}
 
 	if bsaType == NameRecord {
@@ -70,5 +67,20 @@ func ReadFooter(footer []byte, bsaType byte) Footer {
 		}
 	}
 
-	return Footer{Records: records}
+	return records
+}
+
+func Read(bsa []byte) []Record {
+	header := ReadHeader(bsa)
+	offset := GetFooterOffset(header.RecordCount, header.Type)
+
+	records := ReadFooter(bsa[len(bsa)-offset:], header.Type)
+
+	cursor := 4
+	for i := 0; i < int(header.RecordCount); i++ {
+		records[i].Contents = bsa[cursor : cursor+int(records[i].Size)]
+		cursor += int(records[i].Size)
+	}
+
+	return records
 }
