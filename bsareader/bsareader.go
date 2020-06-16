@@ -1,22 +1,74 @@
 package bsareader
 
-type BsaHeader struct {
+import "fmt"
+
+// https://en.uesp.net/wiki/Daggerfall:BSA_file_formats#BSA_Header
+type Header struct {
 	RecordCount uint16
-	BsaType     uint16
+	Type        byte
+}
+
+type Footer struct {
+	Records []Record
+}
+
+type Record struct {
+	Name string
+	Size int32
 }
 
 const (
-	NameRecord   = 0x100
-	NumberRecord = 0x200
+	NameRecord   = 1
+	NumberRecord = 2
 )
 
-func word(slice []byte, index int) uint16 {
-	return uint16(slice[index])<<8 | uint16(slice[index+1])
+func word(b []byte) uint16 {
+	return uint16(b[0])<<8 | uint16(b[1])
 }
 
-func ReadHeader(bsa []byte) BsaHeader {
-	return BsaHeader{
-		RecordCount: word(bsa, 0),
-		BsaType:     word(bsa, 2),
+func dword(b []byte) int32 {
+	return int32(b[3]) + (int32(b[2]) << 8) + (int32(b[1]) << 16) + (int32(b[0]) << 24)
+}
+
+// Reads the first 4 bytes of a byte slice as a BSA header.
+func ReadHeader(bsa []byte) Header {
+	return Header{
+		RecordCount: word(bsa[0:2]),
+		Type:        bsa[2],
 	}
+}
+
+// Given the information in a BSA header, returns the offset,
+// measured from the end of the file, to the beginning of the
+// footer.
+func GetFooterOffset(recordCount uint16, bsaType byte) int {
+	if bsaType == NameRecord {
+		return 18 * int(recordCount)
+	}
+	return 8 * int(recordCount)
+}
+
+// Parses a BSA footer into records. If bsaType = 1, it will
+// parse NameRecords; otherwise, it will parse NumberRecords.
+// https://en.uesp.net/wiki/Daggerfall:BSA_file_formats#BsaFooter
+func ReadFooter(footer []byte, bsaType byte) Footer {
+	records := []Record{}
+
+	if bsaType == NameRecord {
+		for i := 0; i+17 <= len(footer); i += 18 {
+			records = append(records, Record{
+				Name: string(footer[i : i+12]),
+				Size: dword(footer[i+14 : i+18]),
+			})
+		}
+	} else {
+		for i := 0; i+7 <= len(footer); i += 8 {
+			records = append(records, Record{
+				Name: fmt.Sprintf("%d", word(footer[i:i+2])),
+				Size: dword(footer[i+4 : i+8]),
+			})
+		}
+	}
+
+	return Footer{Records: records}
 }
