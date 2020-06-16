@@ -20,18 +20,18 @@ const (
 )
 
 func word(b []byte) uint16 {
-	return uint16(b[0])<<8 | uint16(b[1])
+	return uint16(b[1])<<8 | uint16(b[0])
 }
 
 func dword(b []byte) int32 {
-	return int32(b[3]) + (int32(b[2]) << 8) + (int32(b[1]) << 16) + (int32(b[0]) << 24)
+	return int32(b[0]) + (int32(b[1]) << 8) + (int32(b[2]) << 16) + (int32(b[3]) << 24)
 }
 
 // Reads the first 4 bytes of a byte slice as a BSA header.
 func ReadHeader(bsa []byte) Header {
 	return Header{
 		RecordCount: word(bsa[0:2]),
-		Type:        bsa[2],
+		Type:        bsa[3],
 	}
 }
 
