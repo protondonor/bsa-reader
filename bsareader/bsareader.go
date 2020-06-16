@@ -70,6 +70,13 @@ func ReadFooter(footer []byte, bsaType byte) []Record {
 	return records
 }
 
+func List(bsa []byte) []Record {
+	header := ReadHeader(bsa)
+	offset := GetFooterOffset(header.RecordCount, header.Type)
+
+	return ReadFooter(bsa[len(bsa)-offset:], header.Type)
+}
+
 func Read(bsa []byte) []Record {
 	header := ReadHeader(bsa)
 	offset := GetFooterOffset(header.RecordCount, header.Type)
