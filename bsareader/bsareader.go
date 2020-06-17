@@ -91,3 +91,21 @@ func Read(bsa []byte) []Record {
 
 	return records
 }
+
+func ReadRecord(bsa []byte, name string) Record {
+	header := ReadHeader(bsa)
+	offset := GetFooterOffset(header.RecordCount, header.Type)
+
+	records := ReadFooter(bsa[len(bsa)-offset:], header.Type)
+
+	cursor := 4
+	for i := 0; i < int(header.RecordCount); i++ {
+		if records[i].Name == name {
+			records[i].Contents = bsa[cursor : cursor+int(records[i].Size)]
+			return records[i]
+		}
+		cursor += int(records[i].Size)
+	}
+
+	return Record{}
+}
