@@ -2,7 +2,7 @@ package bsareader
 
 import "fmt"
 
-// https://en.uesp.net/wiki/Daggerfall:BSA_file_formats#BSA_Header
+// Header https://en.uesp.net/wiki/Daggerfall:BSA_file_formats#BSA_Header
 type Header struct {
 	RecordCount uint16
 	Type        byte
@@ -27,7 +27,7 @@ func dword(b []byte) int32 {
 	return int32(b[0]) + (int32(b[1]) << 8) + (int32(b[2]) << 16) + (int32(b[3]) << 24)
 }
 
-// Reads the first 4 bytes of a byte slice as a BSA header.
+// ReadHeader Reads the first 4 bytes of a byte slice as a BSA header.
 func ReadHeader(bsa []byte) Header {
 	return Header{
 		RecordCount: word(bsa[0:2]),
@@ -35,6 +35,7 @@ func ReadHeader(bsa []byte) Header {
 	}
 }
 
+// GetFooterOffset
 // Given the information in a BSA header, returns the offset,
 // measured from the end of the file, to the beginning of the
 // footer.
@@ -45,6 +46,7 @@ func GetFooterOffset(recordCount uint16, bsaType byte) int {
 	return 8 * int(recordCount)
 }
 
+// ReadFooter
 // Parses a BSA footer into records. If bsaType = 1, it will
 // parse NameRecords; otherwise, it will parse NumberRecords.
 // https://en.uesp.net/wiki/Daggerfall:BSA_file_formats#BsaFooter
