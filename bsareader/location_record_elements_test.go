@@ -40,17 +40,4 @@ var _ = Describe("location record elements", func() {
 			Expect(lre.Header.BuildingCount).To(BeEquivalentTo(0))
 		})
 	})
-
-	//PIt("reads doors", func() {
-	//	var err error
-	//	bsa, err = ioutil.ReadFile("fixtures/betony.pitem")
-	//	Expect(err).NotTo(HaveOccurred())
-	//
-	//	lres := bsareader.ReadLocationRecords(bsa)
-	//
-	//	Expect(len(lres[0].Doors)).To(BeEquivalentTo(0))
-	//	Expect(len(lres[1].Doors)).To(BeEquivalentTo(0))
-	//	Expect(len(lres[2].Doors)).To(BeEquivalentTo(1))
-	//	Expect(lres[2].Doors[0].BuildingDataIndex).To(BeEquivalentTo(17))
-	//})
 })
