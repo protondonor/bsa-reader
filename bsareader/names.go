@@ -17,7 +17,7 @@ func readName(bsa []byte) string {
 }
 
 func ReadNames(bsa []byte) Names {
-	lc := uint32(dword(bsa[0:4]))
+	lc := udword(bsa[0:4])
 	var names []string
 
 	for i := 4; i < len(bsa); i += 32 {

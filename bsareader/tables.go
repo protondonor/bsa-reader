@@ -41,13 +41,9 @@ func ReadTable(bsa []byte) Table {
 }
 
 func makeRow(bsa []byte) Row {
-	mapIdNum := dword(bsa[0:4])
-	mapId := MapId{
-		LocationExterior: uint32(mapIdNum & 0x000fffff),
-		LocationIndex:    uint16((uint32(mapIdNum) & 0xfff00000) >> 20),
-	}
+	mapId := makeMapId(dword(bsa[0:4]))
 
-	latTypeNum := uint32(dword(bsa[4:8]))
+	latTypeNum := udword(bsa[4:8])
 	latType := LatitudeType{
 		Latitude:   latTypeNum & 0x1ffffff,
 		Type:       uint16((latTypeNum >> 25) & 0x1f),
@@ -55,7 +51,7 @@ func makeRow(bsa []byte) Row {
 		Hidden:     latTypeNum&0x80000000 != 0,
 	}
 
-	longTypeNum := uint32(dword(bsa[8:12]))
+	longTypeNum := udword(bsa[8:12])
 	longType := LongitudeType{
 		Longitude: longTypeNum & 0xffffff,
 		Height:    (longTypeNum >> 24) & 0xf,
@@ -67,6 +63,13 @@ func makeRow(bsa []byte) Row {
 		LatitudeType:  latType,
 		LongitudeType: longType,
 		Flavor:        bsa[12],
-		Services:      uint32(dword(bsa[13:17])),
+		Services:      udword(bsa[13:17]),
+	}
+}
+
+func makeMapId(mapIdNum int32) MapId {
+	return MapId{
+		LocationExterior: uint32(mapIdNum & 0x000fffff),
+		LocationIndex:    uint16((uint32(mapIdNum) & 0xfff00000) >> 20),
 	}
 }

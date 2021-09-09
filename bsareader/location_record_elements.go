@@ -34,8 +34,14 @@ type LocationRecordElementHeader struct {
 	BuildingCount uint16
 }
 
+func (l LocationRecordElement) Len() int {
+	// how long is an LRE?
+	// 4 + 6*len(lre.Doors) + 71 + 48 bytes long
+	return 4 + 6*len(l.Doors) + 71 + 48
+}
+
 func ReadLocationRecordElem(bsa []byte) LocationRecordElement {
-	doorCount := uint32(dword(bsa[0:4]))
+	doorCount := udword(bsa[0:4])
 	var doors []Door
 	for i := 0; uint32(i) < doorCount; i++ {
 		d := 4 + i*6 // door record start
@@ -45,10 +51,11 @@ func ReadLocationRecordElem(bsa []byte) LocationRecordElement {
 		doors = append(doors, door)
 	}
 
+	s := len(doors) * 6 // skip 6 bytes per door
 	return LocationRecordElement{
 		Doors:        doors,
-		ObjectHeader: readObjectHeader(bsa[4:75]),
-		Header:       readLREHeader(bsa[75:123]),
+		ObjectHeader: readObjectHeader(bsa[s+4 : s+75]),
+		Header:       readLREHeader(bsa[s+75 : s+123]),
 	}
 }
 
@@ -67,7 +74,7 @@ func readObjectHeader(bsa []byte) ObjectHeader {
 		Latitude:   dword(bsa[7:11]),
 		Longitude:  dword(bsa[15:19]),
 		IsExterior: word(bsa[19:21]) == 0x8000,
-		ObjectId:   uint32(dword(bsa[31:35])),
-		ParentId:   uint32(dword(bsa[39:43])),
+		ObjectId:   udword(bsa[31:35]),
+		ParentId:   udword(bsa[39:43]),
 	}
 }
