@@ -5,19 +5,23 @@ type Names struct {
 	Names         []string
 }
 
+func readName(bsa []byte) string {
+	var curname []byte
+	for j := 0; j < 32; j++ {
+		if bsa[j] == 0 {
+			return string(curname)
+		}
+		curname = append(curname, bsa[j])
+	}
+	return string(curname)
+}
+
 func ReadNames(bsa []byte) Names {
 	lc := uint32(dword(bsa[0:4]))
 	var names []string
 
 	for i := 4; i < len(bsa); i += 32 {
-		var curname []byte
-		for j := 0; j < 32; j++ {
-			if bsa[i+j] == 0 {
-				names = append(names, string(curname))
-				break
-			}
-			curname = append(curname, bsa[i+j])
-		}
+		names = append(names, readName(bsa[i:i+32]))
 	}
 
 	return Names{
