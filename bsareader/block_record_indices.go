@@ -1,8 +1,11 @@
 package bsareader
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
-var blockPrefixes = [45]string{
+var extBlockPrefixes = [45]string{
 	"TVRN", "GENR", "RESI", "WEAP", "ARMR",
 	"ALCH", "BANK", "BOOK", "CLOT", "FURN",
 	"GEMS", "LIBR", "PAWN", "TEMP", "PALA",
@@ -14,7 +17,11 @@ var blockPrefixes = [45]string{
 	"WALL", "MARK", "SHIP", "WITC",
 }
 
-var blockExtLetters = [12]string{
+var dungeonBlockPrefixes = [6]string{
+	"N", "W", "L", "S", "B", "M", // L is unused
+}
+
+var extBlockLetters = [12]string{
 	"AA", "BA", "AL", "BL", "AM", "BM", "AS", "BS",
 	"GA", "GL", "GM", "GS",
 }
@@ -35,7 +42,13 @@ func (e ExteriorData) BlockInfo(index int) string {
 	}
 
 	// general case
-	return blockPrefixes[e.BlockIndex[index]] +
-		blockExtLetters[e.BlockChar[index]] +
+	return extBlockPrefixes[e.BlockIndex[index]] +
+		extBlockLetters[e.BlockChar[index]] +
 		strconv.Itoa(int(e.BlockNumber[index]))
+}
+
+func (d DungeonBlock) BlockInfo() string {
+	return fmt.Sprintf("%s%07d.RDB",
+		dungeonBlockPrefixes[d.BlockIndex],
+		d.BlockNumber)
 }

@@ -35,8 +35,6 @@ type ExteriorData struct {
 	Services    uint32
 }
 
-type DungeonBlock struct{}
-
 func ReadPItems(bsa []byte, count int) PItems {
 	var offsets []uint32
 	for i := 0; i < count; i += 4 {
