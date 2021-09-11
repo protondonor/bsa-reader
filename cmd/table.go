@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"io/ioutil"
 
 	"github.com/spf13/cobra"
 )
@@ -20,8 +22,18 @@ for a list of region numbers.
 
 Usage:
   bsa-reader tables MAPTABLE.017`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("table called")
+		bsaPath := args[0]
+		// slow way. will probably break:
+		bsa, err := ioutil.ReadFile(bsaPath)
+		if err != nil {
+			panic(err)
+		}
+		table := bsareader.ReadTable(bsa)
+		for i := 0; i < len(table.Rows); i++ {
+			fmt.Println(table.Rows[i])
+		}
 	},
 }
 

@@ -1,5 +1,7 @@
 package bsareader
 
+import "fmt"
+
 type Table struct {
 	Rows []Row
 }
@@ -30,6 +32,17 @@ type LongitudeType struct {
 	Longitude uint32
 	Width     uint32
 	Height    uint32
+}
+
+func (r Row) String() string {
+	return fmt.Sprintf(
+		"Exterior:%05x\nLatitude:%d\nLongitude:%d\nDiscovered:%t\nServices:%b\n",
+		r.MapId.LocationExterior,
+		r.LatitudeType.Latitude,
+		r.LongitudeType.Longitude,
+		r.LatitudeType.Discovered,
+		r.Services,
+	)
 }
 
 func ReadTable(bsa []byte) Table {
