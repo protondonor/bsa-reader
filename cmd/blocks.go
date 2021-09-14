@@ -5,6 +5,7 @@ import (
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/spf13/cobra"
 	"io/ioutil"
+	"path/filepath"
 )
 
 var blocksCmd = &cobra.Command{
@@ -18,7 +19,7 @@ Usage:
 		name := args[0]
 		region := args[1]
 
-		bsaPath := "MAPS.BSA" // brittle, shitty
+		bsaPath := filepath.Join(bsareader.GetDaggerfallPath(), "MAPS.BSA") // brittle, shitty
 		// slow way. will probably break:
 		bsa, err := ioutil.ReadFile(bsaPath)
 		if err != nil {
