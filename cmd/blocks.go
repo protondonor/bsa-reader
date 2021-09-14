@@ -26,7 +26,7 @@ Usage:
 			panic(err)
 		}
 
-		blocks := bsareader.ReadBlocks(bsa, name, region)
+		blocks := bsareader.ReadBlocks(bsa, name, bsareader.ParseRegion(region))
 		for i := 0; i < len(blocks); i++ {
 			fmt.Println(blocks[i])
 		}
