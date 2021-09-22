@@ -13,6 +13,7 @@ var _ = Describe("ReadBlocks", func() {
 	var maps []byte
 	BeforeEach(func() {
 		var err error
+		// TODO: use a fixture instead
 		maps, err = ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "MAPS.BSA"))
 		Expect(err).NotTo(HaveOccurred())
 	})
