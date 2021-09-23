@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"path/filepath"
@@ -26,7 +27,7 @@ Usage:
 			panic(err)
 		}
 
-		blocks := bsareader.ReadBlocks(bsa, name, bsareader.ParseRegion(region))
+		blocks := maps.ReadBlocks(bsa, name, bsareader.ParseRegion(region))
 		for i := 0; i < len(blocks); i++ {
 			fmt.Println(blocks[i])
 		}

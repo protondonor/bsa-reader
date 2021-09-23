@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/flats"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -33,7 +34,7 @@ bsa-reader flat $index`,
 			panic(err)
 		}
 
-		flats := bsareader.ReadFlats(bsa)
+		flats := flats.ReadFlats(bsa)
 		fmt.Printf("Read %d flats\n from FLATS.CFG", len(flats))
 		fmt.Printf("Flat %d: %s\n", i, flats[i])
 	},

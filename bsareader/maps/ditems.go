@@ -1,4 +1,8 @@
-package bsareader
+package maps
+
+import (
+	"github.com/rowanjacobs/bsa-reader/bsareader/bytes"
+)
 
 type DItems struct {
 	Offsets []DungeonOffset
@@ -45,13 +49,13 @@ func (d DItems) GetBlocks(name string) []string {
 }
 
 func ReadDItems(bsa []byte) DItems {
-	count := udword(bsa[0:4])
+	count := bytes.Udword(bsa[0:4])
 	var offsets []DungeonOffset
 	var items []DungeonInterior
 	for i := 0; i < int(count)*8; i += 8 {
 		offset := DungeonOffset{
-			Offset:       udword(bsa[i+4 : i+8]),
-			DungeonObjId: udword(bsa[i : i+4]),
+			Offset:       bytes.Udword(bsa[i+4 : i+8]),
+			DungeonObjId: bytes.Udword(bsa[i : i+4]),
 		}
 		offsets = append(offsets, offset)
 
@@ -59,13 +63,13 @@ func ReadDItems(bsa []byte) DItems {
 
 		lre := ReadLocationRecordElem(bsa[lreOffset:])
 		dhOffset := lreOffset + uint32(lre.Len())
-		bc := word(bsa[dhOffset+3 : dhOffset+5])
+		bc := bytes.Word(bsa[dhOffset+3 : dhOffset+5])
 
 		var blocks []DungeonBlock
 		bOffset := dhOffset + 10
 		for j := 0; j < int(bc); j += 1 {
 			thisBlock := bOffset + 4*uint32(j)
-			bn, isb, bi := parseBlockInfo(word(bsa[thisBlock+2 : thisBlock+4]))
+			bn, isb, bi := parseBlockInfo(bytes.Word(bsa[thisBlock+2 : thisBlock+4]))
 
 			block := DungeonBlock{
 				X:               bsa[thisBlock],

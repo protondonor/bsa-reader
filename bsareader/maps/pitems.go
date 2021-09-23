@@ -1,4 +1,8 @@
-package bsareader
+package maps
+
+import (
+	"github.com/rowanjacobs/bsa-reader/bsareader/bytes"
+)
 
 type PItems struct {
 	Items   []LocationExterior
@@ -20,9 +24,9 @@ type BuildingData struct {
 }
 
 type ExteriorData struct {
-	Name        string
-	MapId       MapId
-	Width       uint8
+	Name       string
+	MapId      MapId
+	Width      uint8
 	Height      uint8
 	Port        bool
 	BlockIndex  []uint8
@@ -30,15 +34,15 @@ type ExteriorData struct {
 	BlockChar   []uint8
 	DungeonName string
 	Encounters  uint8
-	BlockCount  uint8
-	Blocks      []DungeonBlock
-	Services    uint32
+	BlockCount uint8
+	Blocks     []DungeonBlock
+	Services   uint32
 }
 
 func ReadPItems(bsa []byte, count int) PItems {
 	var offsets []uint32
 	for i := 0; i < count; i += 4 {
-		offsets = append(offsets, udword(bsa[i:i+4]))
+		offsets = append(offsets, bytes.Udword(bsa[i:i+4]))
 	}
 	var locexts []LocationExterior
 	for i := 0; i < len(offsets); i++ {
@@ -50,9 +54,9 @@ func ReadPItems(bsa []byte, count int) PItems {
 		for j := 0; j < int(lre.Header.BuildingCount); j++ {
 			s := bdStart + 26*uint32(j)
 			building := BuildingData{
-				NameSeed:  word(bsa[s : s+2]),
-				FactionId: word(bsa[s+18 : s+20]),
-				ObjectId:  udword(bsa[s+20 : s+24]),
+				NameSeed:  bytes.Word(bsa[s : s+2]),
+				FactionId: bytes.Word(bsa[s+18 : s+20]),
+				ObjectId:  bytes.Udword(bsa[s+20 : s+24]),
 				Type:      bsa[s+24],
 				Quality:   bsa[s+25],
 			}
@@ -62,7 +66,7 @@ func ReadPItems(bsa []byte, count int) PItems {
 		edStart := bdStart + uint32(lre.Header.BuildingCount)*26
 		extData := ExteriorData{
 			Name:        readName(bsa[edStart : edStart+32]),
-			MapId:       makeMapId(dword(bsa[edStart+32 : edStart+36])),
+			MapId:       makeMapId(bytes.Dword(bsa[edStart+32 : edStart+36])),
 			Width:       bsa[edStart+40],
 			Height:      bsa[edStart+41],
 			Port:        bsa[edStart+47] != 0,
@@ -72,7 +76,7 @@ func ReadPItems(bsa []byte, count int) PItems {
 			DungeonName: readName(bsa[edStart+241 : edStart+273]),
 			Encounters:  bsa[edStart+273],
 			BlockCount:  bsa[edStart+274],
-			Services:    udword(bsa[edStart+412 : edStart+416]),
+			Services:    bytes.Udword(bsa[edStart+412 : edStart+416]),
 		}
 
 		locexts = append(locexts, LocationExterior{

@@ -1,9 +1,9 @@
-package bsareader_test
+package maps_test
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 	"io/ioutil"
 )
 
@@ -21,7 +21,7 @@ var _ = Describe("location record elements", func() {
 
 	Describe("reading a single element", func() {
 		It("reads object headers", func() {
-			lre := bsareader.ReadLocationRecordElem(bsa)
+			lre := maps.ReadLocationRecordElem(bsa)
 
 			Expect(lre.ObjectHeader.Latitude).To(BeEquivalentTo(0x00dbb800))
 			Expect(lre.ObjectHeader.Longitude).To(BeEquivalentTo(0x004E3801))
@@ -31,7 +31,7 @@ var _ = Describe("location record elements", func() {
 		})
 
 		It("reads LRE headers", func() {
-			lre := bsareader.ReadLocationRecordElem(bsa)
+			lre := maps.ReadLocationRecordElem(bsa)
 
 			Expect(lre.Header.Name).To(Equal("Ruins of Cosh Hall"))
 			Expect(lre.Header.Width).To(BeEquivalentTo(1))

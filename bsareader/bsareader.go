@@ -1,6 +1,9 @@
 package bsareader
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/rowanjacobs/bsa-reader/bsareader/bytes"
+)
 
 // Header https://en.uesp.net/wiki/Daggerfall:BSA_file_formats#BSA_Header
 type Header struct {
@@ -19,22 +22,10 @@ const (
 	NumberRecord = 2
 )
 
-func word(b []byte) uint16 {
-	return uint16(b[1])<<8 | uint16(b[0])
-}
-
-func dword(b []byte) int32 {
-	return int32(b[0]) + (int32(b[1]) << 8) + (int32(b[2]) << 16) + (int32(b[3]) << 24)
-}
-
-func udword(b []byte) uint32 {
-	return uint32(b[0]) + (uint32(b[1]) << 8) + (uint32(b[2]) << 16) + (uint32(b[3]) << 24)
-}
-
 // ReadHeader Reads the first 4 bytes of a byte slice as a BSA header.
 func ReadHeader(bsa []byte) Header {
 	return Header{
-		RecordCount: word(bsa[0:2]),
+		RecordCount: bytes.Word(bsa[0:2]),
 		Type:        bsa[3],
 	}
 }
@@ -61,14 +52,14 @@ func ReadFooter(footer []byte, bsaType byte) []Record {
 		for i := 0; i+17 <= len(footer); i += 18 {
 			records = append(records, Record{
 				Name: string(footer[i : i+12]),
-				Size: dword(footer[i+14 : i+18]),
+				Size: bytes.Dword(footer[i+14 : i+18]),
 			})
 		}
 	} else {
 		for i := 0; i+7 <= len(footer); i += 8 {
 			records = append(records, Record{
-				Name: fmt.Sprintf("%d", word(footer[i:i+2])),
-				Size: dword(footer[i+4 : i+8]),
+				Name: fmt.Sprintf("%d", bytes.Word(footer[i:i+2])),
+				Size: bytes.Dword(footer[i+4 : i+8]),
 			})
 		}
 	}

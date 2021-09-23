@@ -1,9 +1,10 @@
-package bsareader_test
+package flats_test
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/flats"
 	"io/ioutil"
 	"path/filepath"
 )
@@ -18,7 +19,7 @@ var _ = Describe("ReadFlats", func() {
 	})
 
 	It("returns flats", func() {
-		flats := bsareader.ReadFlats(flatsCfg)
+		flats := flats.ReadFlats(flatsCfg)
 		Expect(flats).To(HaveLen(214))
 		Expect(flats[0].Texture.File).To(Equal(175))
 		Expect(flats[0].Texture.Index).To(Equal(0))

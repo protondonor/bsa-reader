@@ -1,9 +1,9 @@
-package bsareader_test
+package maps_test
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 )
 
 var _ = Describe("tables", func() {
@@ -13,7 +13,7 @@ var _ = Describe("tables", func() {
 	}
 
 	It("reads the map ID", func() {
-		mapTable := bsareader.ReadTable(bsa)
+		mapTable := maps.ReadTable(bsa)
 
 		mapId := mapTable.Rows[0].MapId
 		Expect(mapId.LocationExterior).To(BeEquivalentTo(0x53D8F))
@@ -21,7 +21,7 @@ var _ = Describe("tables", func() {
 	})
 
 	It("reads the latitude and location type", func() {
-		mapTable := bsareader.ReadTable(bsa)
+		mapTable := maps.ReadTable(bsa)
 
 		latType := mapTable.Rows[0].LatitudeType
 		Expect(latType.Latitude).To(BeEquivalentTo(0xdba800))
@@ -31,7 +31,7 @@ var _ = Describe("tables", func() {
 	})
 
 	It("reads the longitude, width, and height", func() {
-		mapTable := bsareader.ReadTable(bsa)
+		mapTable := maps.ReadTable(bsa)
 
 		longType := mapTable.Rows[0].LongitudeType
 		Expect(longType.Longitude).To(BeEquivalentTo(0x4e2801))
@@ -40,14 +40,14 @@ var _ = Describe("tables", func() {
 	})
 
 	It("reads dungeon flavor text index", func() {
-		mapTable := bsareader.ReadTable(bsa)
+		mapTable := maps.ReadTable(bsa)
 
 		flavor := mapTable.Rows[0].Flavor
 		Expect(flavor).To(BeEquivalentTo(2))
 	})
 
 	It("reads services bitfield", func() {
-		mapTable := bsareader.ReadTable([]byte{0x8A, 0xE4, 0x13, 0x00, 0x00,
+		mapTable := maps.ReadTable([]byte{0x8A, 0xE4, 0x13, 0x00, 0x00,
 			0x20, 0x39, 0x44, 0x01, 0x28, 0x7A, 0x34, 0xFF, 0x00, 0x01, 0x00, 0x01})
 
 		services := mapTable.Rows[0].Services
@@ -65,7 +65,7 @@ var _ = Describe("tables", func() {
 			0x00, 0x00,
 		}
 
-		mapTable := bsareader.ReadTable(bsa2)
+		mapTable := maps.ReadTable(bsa2)
 		Expect(mapTable.Rows).To(HaveLen(4))
 	})
 })

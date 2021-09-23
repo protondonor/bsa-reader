@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 	"io/ioutil"
 
 	"github.com/spf13/cobra"
@@ -27,7 +27,7 @@ for a list of region numbers.`,
 		if err != nil {
 			panic(err)
 		}
-		names := bsareader.ReadNames(bsa)
+		names := maps.ReadNames(bsa)
 		for i := 0; i < len(names.Names); i++ {
 			fmt.Println(names.Names[i])
 		}

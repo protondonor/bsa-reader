@@ -1,11 +1,11 @@
-package bsareader_test
+package maps_test
 
 import (
 	. "github.com/onsi/ginkgo"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 	"io/ioutil"
 
 	. "github.com/onsi/gomega"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
 )
 
 var _ = Describe("pItems", func() {
@@ -31,21 +31,21 @@ var _ = Describe("pItems", func() {
 			which includes all fields from the LocationRecordElement and some
 			data of its own.
 		*/
-		pItems := bsareader.ReadPItems(cybiades, 1)
+		pItems := maps.ReadPItems(cybiades, 1)
 
 		Expect(pItems.Offsets).To(HaveLen(1))
 		Expect(pItems.Offsets[0]).To(BeEquivalentTo(0))
 	})
 
 	It("reads location record elements", func() {
-		pItems := bsareader.ReadPItems(cybiades, 1)
+		pItems := maps.ReadPItems(cybiades, 1)
 
 		Expect(pItems.Items[0].LRE.Doors).To(HaveLen(0))
 		Expect(pItems.Items[0].LRE.Header.Name).To(Equal("Ruins of Cosh Hall"))
 	})
 
 	It("reads exterior data", func() {
-		pItems := bsareader.ReadPItems(cybiades, 1)
+		pItems := maps.ReadPItems(cybiades, 1)
 
 		Expect(pItems.Items[0].Exterior.Name).To(Equal("Ruins of Cosh Hall"))
 		Expect(pItems.Items[0].Exterior.MapId.LocationExterior).To(BeEquivalentTo(0x53D8F))
@@ -61,7 +61,7 @@ var _ = Describe("pItems", func() {
 	})
 
 	It("reads building data", func() {
-		pItems := bsareader.ReadPItems(betony, 25)
+		pItems := maps.ReadPItems(betony, 25)
 
 		Expect(pItems.Items[3].LRE.Header.Name).To(Equal("Mastersley Orchard"))
 		Expect(pItems.Items[3].Buildings).To(HaveLen(1))
@@ -73,7 +73,7 @@ var _ = Describe("pItems", func() {
 	})
 
 	It("reads multiple elements", func() {
-		pItems := bsareader.ReadPItems(betony, 25)
+		pItems := maps.ReadPItems(betony, 25)
 
 		Expect(pItems.Items[2].LRE.Header.Name).To(Equal("Tristore Laboratory"))
 	})

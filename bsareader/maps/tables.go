@@ -1,6 +1,9 @@
-package bsareader
+package maps
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/rowanjacobs/bsa-reader/bsareader/bytes"
+)
 
 type Table struct {
 	Rows []Row
@@ -54,9 +57,9 @@ func ReadTable(bsa []byte) Table {
 }
 
 func makeRow(bsa []byte) Row {
-	mapId := makeMapId(dword(bsa[0:4]))
+	mapId := makeMapId(bytes.Dword(bsa[0:4]))
 
-	latTypeNum := udword(bsa[4:8])
+	latTypeNum := bytes.Udword(bsa[4:8])
 	latType := LatitudeType{
 		Latitude:   latTypeNum & 0x1ffffff,
 		Type:       uint16((latTypeNum >> 25) & 0x1f),
@@ -64,7 +67,7 @@ func makeRow(bsa []byte) Row {
 		Hidden:     latTypeNum&0x80000000 != 0,
 	}
 
-	longTypeNum := udword(bsa[8:12])
+	longTypeNum := bytes.Udword(bsa[8:12])
 	longType := LongitudeType{
 		Longitude: longTypeNum & 0xffffff,
 		Height:    (longTypeNum >> 24) & 0xf,
@@ -76,7 +79,7 @@ func makeRow(bsa []byte) Row {
 		LatitudeType:  latType,
 		LongitudeType: longType,
 		Flavor:        bsa[12],
-		Services:      udword(bsa[13:17]),
+		Services:      bytes.Udword(bsa[13:17]),
 	}
 }
 

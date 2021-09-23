@@ -1,11 +1,11 @@
-package bsareader_test
+package maps_test
 
 import (
 	. "github.com/onsi/ginkgo"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 	"io/ioutil"
 
 	. "github.com/onsi/gomega"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
 )
 
 var _ = Describe("dItems", func() {
@@ -21,7 +21,7 @@ var _ = Describe("dItems", func() {
 		 * Each MapDItem record begins with an UInt32 count (DungeonCount)
 		 * of DungeonInterior elements contained within the record.
 		 */
-		dItems := bsareader.ReadDItems(cybiades)
+		dItems := maps.ReadDItems(cybiades)
 
 		Expect(dItems.Offsets).To(HaveLen(1))
 		// I feel like these are in reverse order but idk
@@ -30,7 +30,7 @@ var _ = Describe("dItems", func() {
 	})
 
 	It("reads dungeon records", func() {
-		dItems := bsareader.ReadDItems(cybiades)
+		dItems := maps.ReadDItems(cybiades)
 
 		Expect(dItems.Items).To(HaveLen(1))
 		Expect(dItems.Items[0].LRE.Doors).To(HaveLen(8))
@@ -50,7 +50,7 @@ var _ = Describe("dItems", func() {
 		})
 
 		It("reads dungeon records", func() {
-			dItems := bsareader.ReadDItems(betony)
+			dItems := maps.ReadDItems(betony)
 
 			Expect(dItems.Items).To(HaveLen(8))
 			Expect(dItems.Items[0].LRE.Header.Name).To(Equal("Tristore Laboratory"))
@@ -65,7 +65,7 @@ var _ = Describe("dItems", func() {
 
 		Context("GetBlocks", func() {
 			It("can retrieve blocks given a dungeon name", func() {
-				dItems := bsareader.ReadDItems(betony)
+				dItems := maps.ReadDItems(betony)
 
 				blocks := dItems.GetBlocks("The Yeomhouse Crypts")
 				Expect(blocks).To(HaveLen(5))

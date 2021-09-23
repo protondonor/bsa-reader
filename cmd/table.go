@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 	"io/ioutil"
 
 	"github.com/spf13/cobra"
@@ -30,7 +30,7 @@ Usage:
 		if err != nil {
 			panic(err)
 		}
-		table := bsareader.ReadTable(bsa)
+		table := maps.ReadTable(bsa)
 		for i := 0; i < len(table.Rows); i++ {
 			fmt.Println(table.Rows[i])
 		}

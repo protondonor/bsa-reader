@@ -1,4 +1,8 @@
-package bsareader
+package maps
+
+import (
+	"github.com/rowanjacobs/bsa-reader/bsareader/bytes"
+)
 
 type Door struct {
 	BuildingDataIndex uint16
@@ -41,12 +45,12 @@ func (l LocationRecordElement) Len() int {
 }
 
 func ReadLocationRecordElem(bsa []byte) LocationRecordElement {
-	doorCount := udword(bsa[0:4])
+	doorCount := bytes.Udword(bsa[0:4])
 	var doors []Door
 	for i := 0; uint32(i) < doorCount; i++ {
 		d := 4 + i*6 // door record start
 		door := Door{
-			BuildingDataIndex: word(bsa[d : d+2]),
+			BuildingDataIndex: bytes.Word(bsa[d : d+2]),
 		}
 		doors = append(doors, door)
 	}
@@ -65,16 +69,16 @@ func readLREHeader(bsa []byte) LocationRecordElementHeader {
 		Width:         bsa[32],
 		Height:        bsa[33],
 		LocationType:  bsa[34],
-		BuildingCount: word(bsa[41:43]),
+		BuildingCount: bytes.Word(bsa[41:43]),
 	}
 }
 
 func readObjectHeader(bsa []byte) ObjectHeader {
 	return ObjectHeader{
-		Latitude:   dword(bsa[7:11]),
-		Longitude:  dword(bsa[15:19]),
-		IsExterior: word(bsa[19:21]) == 0x8000,
-		ObjectId:   udword(bsa[31:35]),
-		ParentId:   udword(bsa[39:43]),
+		Latitude:   bytes.Dword(bsa[7:11]),
+		Longitude:  bytes.Dword(bsa[15:19]),
+		IsExterior: bytes.Word(bsa[19:21]) == 0x8000,
+		ObjectId:   bytes.Udword(bsa[31:35]),
+		ParentId:   bytes.Udword(bsa[39:43]),
 	}
 }

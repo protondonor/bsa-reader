@@ -1,9 +1,9 @@
-package bsareader_test
+package maps_test
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 )
 
 var _ = Describe("names", func() {
@@ -15,12 +15,12 @@ var _ = Describe("names", func() {
 	}
 
 	It("reads the count of name records", func() {
-		mapNames := bsareader.ReadNames(bsa)
+		mapNames := maps.ReadNames(bsa)
 		Expect(mapNames.LocationCount).To(BeEquivalentTo(1))
 	})
 
 	It("reads the name records", func() {
-		mapNames := bsareader.ReadNames(bsa)
+		mapNames := maps.ReadNames(bsa)
 		Expect(mapNames.Names).To(ConsistOf("Ruins of Cosh Hall"))
 	})
 })

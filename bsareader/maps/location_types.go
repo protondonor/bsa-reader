@@ -1,4 +1,4 @@
-package bsareader
+package maps
 
 var locationTypes = [15]string{
 	"City", "Town", "Village", "Farmstead",

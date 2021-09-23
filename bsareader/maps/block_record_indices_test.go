@@ -1,16 +1,16 @@
-package bsareader_test
+package maps_test
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rowanjacobs/bsa-reader/bsareader"
+	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 )
 
 var _ = Describe("BlockInfo", func() {
 	Context("Exterior blocks", func() {
 		Context("Default logic", func() {
 			It("returns block string for block at count", func() {
-				extData := bsareader.ExteriorData{
+				extData := maps.ExteriorData{
 					BlockNumber: []byte{17},
 					BlockIndex:  []byte{1},
 					BlockChar:   []byte{1},
@@ -22,7 +22,7 @@ var _ = Describe("BlockInfo", func() {
 
 		Context("Temple", func() {
 			It("uses special values for number and char", func() {
-				extData := bsareader.ExteriorData{
+				extData := maps.ExteriorData{
 					BlockNumber: []byte{17},
 					BlockIndex:  []byte{13},
 					BlockChar:   []byte{1},
@@ -39,7 +39,7 @@ var _ = Describe("BlockInfo", func() {
 
 	Context("Dungeon blocks", func() {
 		It("returns block string", func() {
-			dBlock := bsareader.DungeonBlock{
+			dBlock := maps.DungeonBlock{
 				BlockNumber: 19,
 				BlockIndex:  3,
 			}

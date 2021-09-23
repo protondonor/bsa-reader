@@ -1,4 +1,4 @@
-package bsareader
+package maps
 
 import (
 	"fmt"
