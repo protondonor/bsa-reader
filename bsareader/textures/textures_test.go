@@ -1,8 +1,12 @@
 package textures_test
 
 import (
+	"io/ioutil"
+	"path/filepath"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/rowanjacobs/bsa-reader/bsareader/textures"
 )
 
@@ -39,22 +43,35 @@ var _ = Describe("Textures", func() {
 	})
 
 	Describe("ReadTextures", func() {
-		// var flatsCfg []byte
-		// BeforeEach(func() {
-		// var err error
-		// TODO: use a fixture instead
-		// flatsCfg, err = ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "FLATS.CFG"))
-		// Expect(err).NotTo(HaveOccurred())
-		// })
-		// It("returns flats", func() {
-		// 	flats := flats.ReadFlats(flatsCfg)
-		// 	Expect(flats).To(HaveLen(214))
-		// 	Expect(flats[0].Texture.File).To(Equal(175))
-		// 	Expect(flats[0].Texture.Index).To(Equal(0))
-		// 	Expect(flats[0].Description).To(Equal("beautiful maiden"))
-		// 	Expect(flats[0].Gender.Gender).To(Equal(2))
-		// 	Expect(flats[0].Gender.Obscene).To(BeTrue())
-		// 	Expect(flats[0].FaceIndex).To(Equal(410))
-		// })
+		var texturesFile []byte
+		BeforeEach(func() {
+			var err error
+			// TODO: use a fixture instead
+			texturesFile, err = ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "TEXTURE.003"))
+			Expect(err).NotTo(HaveOccurred())
+		})
+		It("returns textures", func() {
+			txts := textures.ReadTextures(texturesFile)
+			Expect(txts.Header.Count).To(BeEquivalentTo(56))
+			Expect(txts.Header.Name).To(Equal(" Desert Terrain Set Wint"))
+			Expect(txts.RecordPointers).To(HaveLen(56))
+			Expect(txts.TextureRecords).To(HaveLen(56))
+
+			tr := txts.TextureRecords[0]
+			Expect(tr.Width).To(BeEquivalentTo(64))
+			Expect(tr.Height).To(BeEquivalentTo(64))
+			Expect(tr.CompressionType()).To(Equal("Uncompressed"))
+			Expect(tr.FrameCount).To(BeEquivalentTo(1))
+		})
+
+		Context("textures", func() {
+			It("contain image data", func() {
+				txts := textures.ReadTextures(texturesFile)
+				tr := txts.TextureRecords[0]
+				img := tr.Uncompress(texturesFile)
+				Expect(img).To(HaveLen(64))
+				Expect(img[0]).To(HaveLen(64))
+			})
+		})
 	})
 })

@@ -1,5 +1,7 @@
 package textures
 
+import "github.com/rowanjacobs/bsa-reader/bsareader/bytes"
+
 type TextureFile struct {
 	Header         TextureFileHeader
 	RecordPointers []int32
@@ -21,9 +23,49 @@ type TextureRecord struct {
 	DataOffset  uint32
 	IsNormal    bool
 	FrameCount  uint16
-	XScale      int16
-	YScale      int16
-	Data        []byte
+	Scale       int16
+	pointer     int32
+}
+
+func ReadTextures(data []byte) TextureFile {
+	head := TextureFileHeader{
+		Count: bytes.Word(data[0:2]),
+		Name:  string(data[2:26]),
+	}
+
+	var recPtrs []int32
+	cursor := 26
+
+	for i := 0; i < int(head.Count); i++ {
+		ptr := bytes.Dword(data[cursor+2 : cursor+6])
+		recPtrs = append(recPtrs, ptr)
+
+		cursor += 20
+	}
+
+	var trs []TextureRecord
+	curTr := TextureRecord{}
+
+	for i := 0; i < len(recPtrs); i++ {
+		j := recPtrs[i]
+		curTr = TextureRecord{
+			OffsetX:     bytes.Word(data[j : j+2]),
+			OffsetY:     bytes.Word(data[j+2 : j+4]),
+			Width:       bytes.Word(data[j+4 : j+6]),
+			Height:      bytes.Word(data[j+6 : j+8]),
+			Compression: bytes.Uword(data[j+8 : j+10]),
+			RecordSize:  bytes.Udword(data[j+10 : j+14]),
+			DataOffset:  bytes.Udword(data[j+14 : j+18]),
+			IsNormal:    data[j+18] != 0,
+			FrameCount:  bytes.Uword(data[j+20 : j+22]),
+			Scale:       bytes.Word(data[j+24 : j+26]),
+			pointer:     j,
+		}
+		trs = append(trs, curTr)
+	}
+
+	txtFile := TextureFile{Header: head, RecordPointers: recPtrs, TextureRecords: trs}
+	return txtFile
 }
 
 func (t TextureRecord) CompressionType() string {
@@ -37,4 +79,17 @@ func (t TextureRecord) CompressionType() string {
 	default:
 		return "Uncompressed"
 	}
+}
+
+func (t TextureRecord) Uncompress(data []byte) [][]byte {
+	img := [][]byte{}
+	cursor := int(t.DataOffset) + int(t.pointer)
+	for i := 0; i < int(t.Height); i++ {
+		row := data[cursor : cursor+int(t.Width)]
+		img = append(img, row)
+
+		cursor += (256 - int(t.Width))
+	}
+
+	return img
 }
