@@ -45,7 +45,7 @@ func (l LocationRecordElement) Len() int {
 }
 
 func ReadLocationRecordElem(bsa []byte) LocationRecordElement {
-	doorCount := bytes.Udword(bsa[0:4])
+	doorCount := bytes.UDword(bsa[0:4])
 	var doors []Door
 	for i := 0; uint32(i) < doorCount; i++ {
 		d := 4 + i*6 // door record start
@@ -78,7 +78,7 @@ func readObjectHeader(bsa []byte) ObjectHeader {
 		Latitude:   bytes.Dword(bsa[7:11]),
 		Longitude:  bytes.Dword(bsa[15:19]),
 		IsExterior: bytes.Word(bsa[19:21]) == 0x8000,
-		ObjectId:   bytes.Udword(bsa[31:35]),
-		ParentId:   bytes.Udword(bsa[39:43]),
+		ObjectId:   bytes.UDword(bsa[31:35]),
+		ParentId:   bytes.UDword(bsa[39:43]),
 	}
 }

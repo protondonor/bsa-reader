@@ -12,6 +12,6 @@ func Dword(b []byte) int32 {
 	return int32(b[0]) + (int32(b[1]) << 8) + (int32(b[2]) << 16) + (int32(b[3]) << 24)
 }
 
-func Udword(b []byte) uint32 {
+func UDword(b []byte) uint32 {
 	return uint32(b[0]) + (uint32(b[1]) << 8) + (uint32(b[2]) << 16) + (uint32(b[3]) << 24)
 }

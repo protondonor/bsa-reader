@@ -49,13 +49,13 @@ func (d DItems) GetBlocks(name string) []string {
 }
 
 func ReadDItems(bsa []byte) DItems {
-	count := bytes.Udword(bsa[0:4])
+	count := bytes.UDword(bsa[0:4])
 	var offsets []DungeonOffset
 	var items []DungeonInterior
 	for i := 0; i < int(count)*8; i += 8 {
 		offset := DungeonOffset{
-			Offset:       bytes.Udword(bsa[i+4 : i+8]),
-			DungeonObjId: bytes.Udword(bsa[i : i+4]),
+			Offset:       bytes.UDword(bsa[i+4 : i+8]),
+			DungeonObjId: bytes.UDword(bsa[i : i+4]),
 		}
 		offsets = append(offsets, offset)
 
