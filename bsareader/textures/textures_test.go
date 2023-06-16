@@ -68,7 +68,7 @@ var _ = Describe("Textures", func() {
 			It("contain image data", func() {
 				txts := textures.ReadTextures(texturesFile)
 				tr := txts.TextureRecords[0]
-				img := tr.Uncompress(texturesFile)
+				img := tr.Decompress(texturesFile)
 				Expect(img).To(HaveLen(64))
 				Expect(img[0]).To(HaveLen(64))
 			})

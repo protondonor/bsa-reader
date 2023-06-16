@@ -81,7 +81,7 @@ func (t TextureRecord) CompressionType() string {
 	}
 }
 
-func (t TextureRecord) Uncompress(data []byte) [][]byte {
+func (t TextureRecord) Decompress(data []byte) [][]byte {
 	img := [][]byte{}
 	cursor := int(t.DataOffset) + int(t.pointer)
 	for i := 0; i < int(t.Height); i++ {
