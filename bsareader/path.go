@@ -1,6 +1,9 @@
 package bsareader
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+)
 
 // GetDaggerfallPath
 // IDK if it's cool for me to redistribute BSA files with this repo
@@ -10,5 +13,9 @@ func GetDaggerfallPath() string {
 	if path != "" {
 		return path
 	}
-	return "/home/rowan/games/abandon/dfall/arena2"
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "/home/rowan/abandon/dfall/arena2"
+	}
+	return filepath.Join(home, "arena2")
 }
