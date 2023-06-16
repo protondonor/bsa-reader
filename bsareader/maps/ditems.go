@@ -63,13 +63,13 @@ func ReadDItems(bsa []byte) DItems {
 
 		lre := ReadLocationRecordElem(bsa[lreOffset:])
 		dhOffset := lreOffset + uint32(lre.Len())
-		bc := bytes.Word(bsa[dhOffset+3 : dhOffset+5])
+		bc := bytes.Uword(bsa[dhOffset+3 : dhOffset+5])
 
 		var blocks []DungeonBlock
 		bOffset := dhOffset + 10
 		for j := 0; j < int(bc); j += 1 {
 			thisBlock := bOffset + 4*uint32(j)
-			bn, isb, bi := parseBlockInfo(bytes.Word(bsa[thisBlock+2 : thisBlock+4]))
+			bn, isb, bi := parseBlockInfo(bytes.Uword(bsa[thisBlock+2 : thisBlock+4]))
 
 			block := DungeonBlock{
 				X:               bsa[thisBlock],
