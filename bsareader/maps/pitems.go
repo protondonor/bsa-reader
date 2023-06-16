@@ -54,8 +54,8 @@ func ReadPItems(bsa []byte, count int) PItems {
 		for j := 0; j < int(lre.Header.BuildingCount); j++ {
 			s := bdStart + 26*uint32(j)
 			building := BuildingData{
-				NameSeed:  bytes.Uword(bsa[s : s+2]),
-				FactionId: bytes.Uword(bsa[s+18 : s+20]),
+				NameSeed:  bytes.UWord(bsa[s : s+2]),
+				FactionId: bytes.UWord(bsa[s+18 : s+20]),
 				ObjectId:  bytes.UDword(bsa[s+20 : s+24]),
 				Type:      bsa[s+24],
 				Quality:   bsa[s+25],

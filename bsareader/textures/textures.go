@@ -4,6 +4,11 @@ import "github.com/rowanjacobs/bsa-reader/bsareader/bytes"
 
 type TextureFile struct {
 	Header         TextureFileHeader
+	/*
+	There is actually an entire RecordHeader structure.
+	(See https://en.uesp.net/wiki/Daggerfall_Mod:Image_formats/Texture )
+	However, the only actual value of known import in it is the RecordPosition.
+	 */
 	RecordPointers []int32
 	TextureRecords []TextureRecord
 }
@@ -53,11 +58,11 @@ func ReadTextures(data []byte) TextureFile {
 			OffsetY:     bytes.Word(data[j+2 : j+4]),
 			Width:       bytes.Word(data[j+4 : j+6]),
 			Height:      bytes.Word(data[j+6 : j+8]),
-			Compression: bytes.Uword(data[j+8 : j+10]),
+			Compression: bytes.UWord(data[j+8 : j+10]),
 			RecordSize:  bytes.UDword(data[j+10 : j+14]),
 			DataOffset:  bytes.UDword(data[j+14 : j+18]),
 			IsNormal:    data[j+18] != 0,
-			FrameCount:  bytes.Uword(data[j+20 : j+22]),
+			FrameCount:  bytes.UWord(data[j+20 : j+22]),
 			Scale:       bytes.Word(data[j+24 : j+26]),
 			pointer:     j,
 		}
@@ -88,7 +93,7 @@ func (t TextureRecord) Decompress(data []byte) [][]byte {
 		row := data[cursor : cursor+int(t.Width)]
 		img = append(img, row)
 
-		cursor += (256 - int(t.Width))
+		cursor += 256 - int(t.Width)
 	}
 
 	return img

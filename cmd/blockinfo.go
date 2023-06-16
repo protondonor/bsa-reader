@@ -5,7 +5,8 @@ import (
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
 	"github.com/spf13/cobra"
-	"io/ioutil"
+	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -22,9 +23,9 @@ Usage:
 
 		bsaPath := filepath.Join(bsareader.GetDaggerfallPath(), "MAPS.BSA") // brittle, shitty
 		// slow way. will probably break:
-		bsa, err := ioutil.ReadFile(bsaPath)
+		bsa, err := os.ReadFile(bsaPath)
 		if err != nil {
-			panic(err)
+			log.Fatalf(err.Error())
 		}
 
 		blocks := maps.ReadBlocks(bsa, name, bsareader.ParseRegion(region))

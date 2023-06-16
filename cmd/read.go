@@ -4,6 +4,8 @@ package cmd
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
+	"os"
 
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/spf13/cobra"
@@ -28,14 +30,17 @@ Usage:
 		// slow way. will probably break:
 		bsa, err := ioutil.ReadFile(bsaPath)
 		if err != nil {
-			panic(err)
+			log.Fatal(err.Error())
 		}
 		record := bsareader.ReadRecord(bsa, name)
 
 		if Output == "" {
 			fmt.Println(string(record.Contents))
 		} else {
-			ioutil.WriteFile(Output, record.Contents, 0644)
+			err := os.WriteFile(Output, record.Contents, 0644)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
 
 			fmt.Printf("Read record %q and output %d bytes to %s\n", record.Name, record.Size, Output)
 		}

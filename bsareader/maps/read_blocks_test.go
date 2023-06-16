@@ -4,7 +4,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	. "github.com/onsi/gomega"
@@ -15,7 +15,7 @@ var _ = Describe("ReadBlocks", func() {
 	BeforeEach(func() {
 		var err error
 		// TODO: use a fixture instead
-		bsa, err = ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "MAPS.BSA"))
+		bsa, err = os.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "MAPS.BSA"))
 		Expect(err).NotTo(HaveOccurred())
 	})
 

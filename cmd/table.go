@@ -3,7 +3,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
-	"io/ioutil"
+	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -26,9 +27,9 @@ Usage:
 	Run: func(cmd *cobra.Command, args []string) {
 		bsaPath := args[0]
 		// slow way. will probably break:
-		bsa, err := ioutil.ReadFile(bsaPath)
+		bsa, err := os.ReadFile(bsaPath)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 		table := maps.ReadTable(bsa)
 		for i := 0; i < len(table.Rows); i++ {

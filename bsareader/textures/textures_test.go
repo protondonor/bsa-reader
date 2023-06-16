@@ -1,7 +1,7 @@
 package textures_test
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	. "github.com/onsi/ginkgo"
@@ -47,7 +47,7 @@ var _ = Describe("Textures", func() {
 		BeforeEach(func() {
 			var err error
 			// TODO: use a fixture instead
-			texturesFile, err = ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "TEXTURE.003"))
+			texturesFile, err = os.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "TEXTURE.003"))
 			Expect(err).NotTo(HaveOccurred())
 		})
 		It("returns textures", func() {

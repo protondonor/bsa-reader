@@ -3,7 +3,7 @@ package maps_test
 import (
 	. "github.com/onsi/ginkgo"
 	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
-	"io/ioutil"
+	"os"
 
 	. "github.com/onsi/gomega"
 )
@@ -12,9 +12,9 @@ var _ = Describe("pItems", func() {
 	var betony, cybiades []byte
 	BeforeEach(func() {
 		var err error
-		betony, err = ioutil.ReadFile("fixtures/betony.pitem")
+		betony, err = os.ReadFile("fixtures/betony.pitem")
 		Expect(err).NotTo(HaveOccurred())
-		cybiades, err = ioutil.ReadFile("fixtures/cybiades.pitem")
+		cybiades, err = os.ReadFile("fixtures/cybiades.pitem")
 		Expect(err).NotTo(HaveOccurred())
 	})
 

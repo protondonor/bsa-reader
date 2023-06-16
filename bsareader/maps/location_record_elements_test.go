@@ -4,14 +4,14 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
-	"io/ioutil"
+	"os"
 )
 
 var _ = Describe("location record elements", func() {
 	var bsa []byte
 	BeforeEach(func() {
 		var err error
-		bsa, err = ioutil.ReadFile("fixtures/cybiades.pitem")
+		bsa, err = os.ReadFile("fixtures/cybiades.pitem")
 		Expect(err).NotTo(HaveOccurred())
 		/* the first $locationCount dwords in a pItem record are a list
 		 * of offsets to LocationExterior records.

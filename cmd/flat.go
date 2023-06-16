@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/rowanjacobs/bsa-reader/bsareader/flats"
-	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -29,9 +29,9 @@ bsa-reader flat $index`,
 
 		bsaPath := filepath.Join(bsareader.GetDaggerfallPath(), "FLATS.CFG") // brittle, shitty
 		// slow way. will probably break:
-		bsa, err := ioutil.ReadFile(bsaPath)
+		bsa, err := os.ReadFile(bsaPath)
 		if err != nil {
-			panic(err)
+			log.Fatal(err.Error())
 		}
 
 		flats := flats.ReadFlats(bsa)

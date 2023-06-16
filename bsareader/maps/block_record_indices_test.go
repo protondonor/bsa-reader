@@ -32,6 +32,7 @@ var _ = Describe("BlockInfo", func() {
 			})
 		})
 
+		// TODO: what is this?
 		PContext("Wayrest", func() {})
 
 		PContext("Sentinel", func() {})

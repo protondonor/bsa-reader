@@ -4,7 +4,7 @@ func Word(b []byte) int16 {
 	return int16(b[1])<<8 | int16(b[0])
 }
 
-func Uword(b []byte) uint16 {
+func UWord(b []byte) uint16 {
 	return uint16(b[1])<<8 | uint16(b[0])
 }
 

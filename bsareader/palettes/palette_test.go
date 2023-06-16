@@ -5,14 +5,14 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/rowanjacobs/bsa-reader/bsareader/palettes"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
 var _ = Describe("ReadPal", func() {
 
 	It("reads RGB values from a palette", func() {
-		palBytes, err := ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "PAL.RAW"))
+		palBytes, err := os.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "PAL.RAW"))
 		Expect(err).NotTo(HaveOccurred())
 
 		palette := palettes.ReadPalette(palBytes)
@@ -26,7 +26,7 @@ var _ = Describe("ReadPal", func() {
 	})
 
 	It("reads RGB values from a .COL file", func() {
-		colBytes, err := ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "PAL.PAL"))
+		colBytes, err := os.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "PAL.PAL"))
 		Expect(err).NotTo(HaveOccurred())
 
 		palette := palettes.ReadCol(colBytes)

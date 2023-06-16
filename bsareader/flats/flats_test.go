@@ -5,7 +5,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/rowanjacobs/bsa-reader/bsareader/flats"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
@@ -14,7 +14,7 @@ var _ = Describe("ReadFlats", func() {
 	BeforeEach(func() {
 		var err error
 		// TODO: use a fixture instead
-		flatsCfg, err = ioutil.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "FLATS.CFG"))
+		flatsCfg, err = os.ReadFile(filepath.Join(bsareader.GetDaggerfallPath(), "FLATS.CFG"))
 		Expect(err).NotTo(HaveOccurred())
 	})
 

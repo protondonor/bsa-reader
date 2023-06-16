@@ -3,7 +3,8 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
+	"log"
+	"os"
 
 	"github.com/rowanjacobs/bsa-reader/bsareader"
 	"github.com/spf13/cobra"
@@ -20,9 +21,9 @@ Usage:
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		// slow way. will probably break:
-		bsa, err := ioutil.ReadFile(args[0])
+		bsa, err := os.ReadFile(args[0])
 		if err != nil {
-			panic(err)
+			log.Fatal(err.Error())
 		}
 		records := bsareader.List(bsa)
 

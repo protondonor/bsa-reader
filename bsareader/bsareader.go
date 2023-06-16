@@ -26,7 +26,7 @@ const (
 // ReadHeader Reads the first 4 bytes of a byte slice as a BSA header.
 func ReadHeader(bsa []byte) Header {
 	return Header{
-		RecordCount: bytes.Uword(bsa[0:2]),
+		RecordCount: bytes.UWord(bsa[0:2]),
 		Type:        bsa[3],
 	}
 }
@@ -59,7 +59,7 @@ func ReadFooter(footer []byte, bsaType byte) []Record {
 	} else {
 		for i := 0; i+7 <= len(footer); i += 8 {
 			records = append(records, Record{
-				Name: fmt.Sprintf("%d", bytes.Uword(footer[i:i+2])),
+				Name: fmt.Sprintf("%d", bytes.UWord(footer[i:i+2])),
 				Size: bytes.Dword(footer[i+4 : i+8]),
 			})
 		}

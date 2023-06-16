@@ -50,7 +50,7 @@ func ReadLocationRecordElem(bsa []byte) LocationRecordElement {
 	for i := 0; uint32(i) < doorCount; i++ {
 		d := 4 + i*6 // door record start
 		door := Door{
-			BuildingDataIndex: bytes.Uword(bsa[d : d+2]),
+			BuildingDataIndex: bytes.UWord(bsa[d : d+2]),
 		}
 		doors = append(doors, door)
 	}
@@ -69,7 +69,7 @@ func readLREHeader(bsa []byte) LocationRecordElementHeader {
 		Width:         bsa[32],
 		Height:        bsa[33],
 		LocationType:  bsa[34],
-		BuildingCount: bytes.Uword(bsa[41:43]),
+		BuildingCount: bytes.UWord(bsa[41:43]),
 	}
 }
 
@@ -77,7 +77,7 @@ func readObjectHeader(bsa []byte) ObjectHeader {
 	return ObjectHeader{
 		Latitude:   bytes.Dword(bsa[7:11]),
 		Longitude:  bytes.Dword(bsa[15:19]),
-		IsExterior: bytes.Uword(bsa[19:21]) == 0x8000,
+		IsExterior: bytes.UWord(bsa[19:21]) == 0x8000,
 		ObjectId:   bytes.UDword(bsa[31:35]),
 		ParentId:   bytes.UDword(bsa[39:43]),
 	}

@@ -3,7 +3,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/rowanjacobs/bsa-reader/bsareader/maps"
-	"io/ioutil"
+	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -23,9 +24,9 @@ for a list of region numbers.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		bsaPath := args[0]
 		// slow way. will probably break:
-		bsa, err := ioutil.ReadFile(bsaPath)
+		bsa, err := os.ReadFile(bsaPath)
 		if err != nil {
-			panic(err)
+			log.Fatalf(err.Error())
 		}
 		names := maps.ReadNames(bsa)
 		for i := 0; i < len(names.Names); i++ {
