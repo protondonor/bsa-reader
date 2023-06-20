@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
-	"github.com/rowanjacobs/bsa-reader/bsareader/flats"
+	"github.com/rowanjacobs/bsa-reader/bsareader/graphics/flats"
 	"log"
 	"os"
 	"path/filepath"

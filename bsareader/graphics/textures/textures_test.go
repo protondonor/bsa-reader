@@ -1,13 +1,13 @@
 package textures_test
 
 import (
+	"github.com/rowanjacobs/bsa-reader/bsareader/graphics/textures"
 	"os"
 	"path/filepath"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
-	"github.com/rowanjacobs/bsa-reader/bsareader/textures"
 )
 
 var _ = Describe("Textures", func() {

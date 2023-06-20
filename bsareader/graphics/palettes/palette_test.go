@@ -4,7 +4,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/rowanjacobs/bsa-reader/bsareader"
-	"github.com/rowanjacobs/bsa-reader/bsareader/palettes"
+	"github.com/rowanjacobs/bsa-reader/bsareader/graphics/palettes"
 	"os"
 	"path/filepath"
 )

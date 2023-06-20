@@ -3,7 +3,7 @@ package textures
 import "github.com/rowanjacobs/bsa-reader/bsareader/bytes"
 
 type TextureFile struct {
-	Header         TextureFileHeader
+	Header TextureFileHeader
 	/*
 	There is actually an entire RecordHeader structure.
 	(See https://en.uesp.net/wiki/Daggerfall_Mod:Image_formats/Texture )
