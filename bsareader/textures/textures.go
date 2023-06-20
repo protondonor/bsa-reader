@@ -87,6 +87,7 @@ func (t TextureRecord) CompressionType() string {
 }
 
 func (t TextureRecord) Decompress(data []byte) [][]byte {
+	// todo: check compression type and act accordingly
 	img := [][]byte{}
 	cursor := int(t.DataOffset) + int(t.pointer)
 	for i := 0; i < int(t.Height); i++ {
@@ -98,3 +99,6 @@ func (t TextureRecord) Decompress(data []byte) [][]byte {
 
 	return img
 }
+
+// todo: match images with palettes
+// todo: convert images into bitmaps

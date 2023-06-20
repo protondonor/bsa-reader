@@ -1,36 +1,25 @@
 package palettes
 
-type Color struct {
-	Red   uint8
-	Green uint8
-	Blue  uint8
-}
+import "image/color"
 
-type Palette [256]Color
-
-func ReadPalette(palBytes []byte) Palette {
-	pal := Palette{}
+func ReadPalette(palBytes []byte) color.Palette {
+	pal := color.Palette{}
+	alpha := uint8(0)
 	for i := 0; i < 256; i++ {
-		color := Color{
-			Red:   palBytes[i*3],
-			Green: palBytes[i*3+1],
-			Blue:  palBytes[i*3+2],
+		rgba := color.NRGBA{
+			R: palBytes[i*3],
+			G: palBytes[i*3+1],
+			B: palBytes[i*3+2],
+			A: alpha,
 		}
-		pal[i] = color
+		pal = append(pal, rgba)
+		if i == 0 {
+			alpha = 255
+		}
 	}
 	return pal
 }
 
-func ReadCol(colBytes []byte) Palette {
-	pal := Palette{}
-	offset := 8
-	for i := 0; i < 256; i++ {
-		color := Color{
-			Red:   colBytes[offset+i*3],
-			Green: colBytes[offset+i*3+1],
-			Blue:  colBytes[offset+i*3+2],
-		}
-		pal[i] = color
-	}
-	return pal
+func ReadCol(colBytes []byte) color.Palette {
+	return ReadPalette(colBytes[8:])
 }
