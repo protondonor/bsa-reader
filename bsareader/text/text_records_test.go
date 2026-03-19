@@ -31,6 +31,6 @@ var _ = Describe("ReadClass", func() {
 		Expect(textRecordDatabase.Headers[0].Text).To(ContainSubstring("(modifier is factored into your"))
 		Expect(textRecordDatabase.Headers[0].Text).To(ContainSubstring("(hand-to-hand / weapon damage."))
 
-		println(textRecordDatabase.Headers[1407].Text)
+		Expect(textRecordDatabase.Headers[1407].Text).To(ContainSubstring("Dummy entry. Must always"))
 	})
 })

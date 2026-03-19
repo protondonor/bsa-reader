@@ -36,8 +36,7 @@ func ReadTextRecord(textRsc []byte) TextRecordDatabase {
 			Offset: bytes.UDword(textRsc[trhOffset+2 : trhOffset+6]),
 		}
 		if int(header.Offset) >= len(textRsc) {
-			// TODO hey man what the fuck is happening here
-			//println("oopsie at i=", i, ", bytes", trhOffset, "-", trhOffset+6, "with header ID:", header.ID, ", Offset:", header.Offset)
+			// there appear to be a large number of records, past record 1407, that simply don't point anywhere.
 			headers = append(headers, header)
 			continue
 		}
@@ -53,7 +52,6 @@ func ReadTextRecord(textRsc []byte) TextRecordDatabase {
 
 		headers = append(headers, header)
 	}
-	println(string(textRsc[headers[1407].Offset:]))
 
 	trd.Headers = headers
 
