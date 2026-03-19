@@ -8,10 +8,21 @@ func UWord(b []byte) uint16 {
 	return uint16(b[1])<<8 | uint16(b[0])
 }
 
+// UWordBE big endian version of UWord
+func UWordBE(b []byte) uint16 {
+	return uint16(b[0])<<8 | uint16(b[1])
+}
+
+
 func Dword(b []byte) int32 {
 	return int32(b[0]) + (int32(b[1]) << 8) + (int32(b[2]) << 16) + (int32(b[3]) << 24)
 }
 
 func UDword(b []byte) uint32 {
 	return uint32(b[0]) + (uint32(b[1]) << 8) + (uint32(b[2]) << 16) + (uint32(b[3]) << 24)
+}
+
+// UDwordBE big endian version of UDword
+func UDwordBE(b []byte) uint32 {
+	return uint32(b[3]) + (uint32(b[2]) << 8) + (uint32(b[1]) << 16) + (uint32(b[0]) << 24)
 }
